@@ -65,14 +65,15 @@ Deno.serve(async (req) => {
       const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
       const prompt = `Given this waste disposal related query: "${query}"
-      Please provide a structured response with:
+      Please provide a structured response with:(dont use too many bullet points)
       1. Waste type identification
       2. Proper disposal methods
-      3. Environmental impact
+      3. Environmental impact and sustainability
       4. Safety considerations
-      Keep the response concise and practical.`;
+      5. If the query is anything not related to waste disposal, please say "I'm sorry, I can only help with waste disposal related queries." and tell nothing more than that.
+      Keep the response concise and practical and also short and to the point.`;
 
-      console.log("Edge Function: Sending request to Gemini API");
+      console.log("Edge Function: Sending request to Gemini API"); 
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();

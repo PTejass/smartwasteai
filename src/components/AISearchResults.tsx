@@ -42,7 +42,9 @@ const AISearchResults = ({ result, isLoading, error, darkMode }: AISearchResults
 
       {result && !isLoading && !error && (
         <div className={`prose ${darkMode ? 'prose-invert' : ''} max-w-none`}>
-          <div className="whitespace-pre-wrap text-sm leading-relaxed">
+          <div className={`whitespace-pre-wrap text-sm leading-relaxed ${
+            darkMode ? 'text-gray-200' : 'text-gray-700'
+          }`}>
             {result}
           </div>
         </div>
