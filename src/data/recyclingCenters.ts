@@ -32,9 +32,17 @@ export const recyclingCenters: RecyclingCentersInfo = {
   'Bangalore': [
     {
       id: 'blr-1',
-      name: 'Bangalore E-Waste Center',
-      address: '321 Electronic City, Bangalore 560100',
-      phone: '080-2555-0321',
+      name: 'Zolopik',
+      address: '58, 22nd Main Rd, Marenahalli, 2nd Phase, J. P. Nagar, Bengaluru, Karnataka 560078',
+      phone: '097434 40440',
+      hours: 'Tue-Sat: 8AM-4:30PM',
+      acceptedItems: ['Electronics', 'Batteries', 'Organic', 'Mobile Phones']
+    },
+    {
+      id: 'blr-2',
+      name: 'Ewaste Hub',
+      address: 'No 3, Oppo Hombegowda Ground, Bus Stop, 191/42, 10th Cross, Lakkasandra Extension, Wilson Garden, Bengaluru, Karnataka 560027',
+      phone: '090663 19066',
       hours: 'Tue-Sat: 8AM-4:30PM',
       acceptedItems: ['Electronics', 'Batteries', 'Computers', 'Mobile Phones']
     }
