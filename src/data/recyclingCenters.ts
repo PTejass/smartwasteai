@@ -36,7 +36,7 @@ export const recyclingCenters: RecyclingCentersInfo = {
       address: '58, 22nd Main Rd, Marenahalli, 2nd Phase, J. P. Nagar, Bengaluru, Karnataka 560078',
       phone: '097434 40440',
       hours: 'Tue-Sat: 8AM-4:30PM',
-      acceptedItems: ['Electronics', 'Batteries', 'Organic', 'Mobile Phones']
+      acceptedItems: ['Electronics', 'Paper', 'Organic', 'Mobile Phones','Plastic Materials']
     },
     {
       id: 'blr-2',
