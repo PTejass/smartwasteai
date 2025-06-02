@@ -15,24 +15,24 @@ const FAQ = ({ darkMode }: FAQProps) => {
 
   const faqItems: FAQItem[] = [
     {
-      question: "How does Ecoquest identify different types of waste?",
-      answer: "Ecoquest uses advanced image recognition technology to analyze photos of waste items. Our system can identify various materials and provide appropriate disposal instructions based on local recycling guidelines."
+      question: "What is Ecoquest?",
+      answer: "Ecoquest is a smart waste disposal guide that helps you find the right way to dispose of different types of waste. We provide detailed information about proper waste disposal methods and connect you with local recycling facilities."
     },
     {
       question: "What types of waste can Ecoquest help me dispose of?",
-      answer: "Ecoquest can help with a wide range of waste types including plastics, paper, glass, metal, electronic waste, organic waste, and hazardous materials. We provide specific instructions for each category."
+      answer: "Ecoquest provides guidance for various types of waste including plastics, paper, glass, metal, electronic waste, organic waste, and hazardous materials. Each category comes with specific disposal instructions and local guidelines."
     },
     {
-      question: "How accurate is the waste identification system?",
-      answer: "Our system has been trained on thousands of waste items and maintains a high accuracy rate. However, for best results, ensure your photos are clear and well-lit. When in doubt, you can always manually select the waste type."
+      question: "How do I find disposal information for my waste?",
+      answer: "Simply use our search feature to look up the type of waste you want to dispose of. You can also browse through different waste categories to find detailed disposal instructions and local recycling options."
     },
     {
-      question: "Can I track my recycling impact?",
-      answer: "Yes! Ecoquest keeps track of your recycling activities and provides insights into your environmental impact, including metrics like CO2 saved and materials diverted from landfills."
+      question: "How can I contribute to Ecoquest?",
+      answer: "You can help improve Ecoquest by submitting new disposal tips or suggestions through our contact form. Your input helps us make the platform more comprehensive and useful for everyone."
     },
     {
       question: "Is Ecoquest available in my area?",
-      answer: "Ecoquest is continuously expanding its coverage. We currently support major cities and regions, with regular updates to include more locations. Check our app for the most up-to-date coverage in your area."
+      answer: "Ecoquest is currently focused on providing waste disposal information for major cities. We're continuously working to expand our coverage to include more locations. Check our platform for the most up-to-date information about your area."
     }
   ];
 
