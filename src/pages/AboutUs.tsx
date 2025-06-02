@@ -43,11 +43,14 @@ const AboutUs = ({ darkMode }: AboutUsProps) => {
           <section className={`p-6 rounded-xl shadow-lg ${
             darkMode ? 'bg-stone-800/50' : 'bg-white'
           }`}>
-            <h2 className="text-xl font-semibold mb-4">Our Impact</h2>
+            <h2 className="text-xl font-semibold mb-4">Our Journey</h2>
             <p className="leading-relaxed">
-              Since our launch, we've helped thousands of users make better waste disposal decisions, 
-              contributing to a cleaner, greener future. We believe that small actions can lead to 
-              significant environmental change, and we're committed to being part of that solution.
+              As a team of passionate students from Dayananda Sagar College of Engineering, we're 
+              embarking on this journey to make a difference in waste management. While we're just 
+              starting out, we're committed to learning, growing, and building a platform that can 
+              truly help people make better waste disposal decisions. We believe in the power of 
+              technology to solve real-world problems, and we're excited to be part of the solution 
+              for a cleaner, greener future.
             </p>
           </section>
         </div>
