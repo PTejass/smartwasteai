@@ -1,4 +1,4 @@
-import { createClient } from "npm:@google/generative-ai@0.1.3";
+import { GoogleGenAI } from "npm:@google/genai@1.0.1";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,102 +10,132 @@ const corsHeaders = {
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
-    return new Response(null, { headers: corsHeaders });
+    return new Response(null, {
+      headers: corsHeaders
+    });
   }
-
   try {
-    console.log("Edge Function: Received request");
-
     // Validate request body
     const requestText = await req.text();
     if (!requestText) {
-      console.error("Edge Function: Empty request body");
-      return new Response(
-        JSON.stringify({ error: "Request body is empty" }),
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({
+        error: "Request body is empty"
+      }), {
+        status: 400,
+        headers: corsHeaders
+      });
     }
-
     // Parse JSON safely
     let body;
     try {
       body = JSON.parse(requestText);
     } catch (e) {
-      console.error("Edge Function: Invalid JSON", e);
-      return new Response(
-        JSON.stringify({ error: "Invalid JSON in request body" }),
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({
+        error: "Invalid JSON in request body"
+      }), {
+        status: 400,
+        headers: corsHeaders
+      });
     }
-
     const { query } = body;
     if (!query) {
-      console.error("Edge Function: Missing query parameter");
-      return new Response(
-        JSON.stringify({ error: "Query is required" }),
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({
+        error: "Query is required"
+      }), {
+        status: 400,
+        headers: corsHeaders
+      });
     }
+
+    // Clean and normalize the query
+    const cleanQuery = query.trim().replace(/\s+/g, ' ');
+    const queryForPrompt = cleanQuery.length < 10 ? `How do I dispose of ${cleanQuery}?` : cleanQuery;
 
     const apiKey = Deno.env.get("GEMINI_API_KEY");
     if (!apiKey) {
-      console.error("Edge Function: GEMINI_API_KEY not set");
-      return new Response(
-        JSON.stringify({ 
-          error: "Gemini API key not configured",
-          details: "Please ensure GEMINI_API_KEY is set in your Supabase project settings"
-        }),
-        { status: 500, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({
+        error: "Configuration error",
+        message: "API key not found"
+      }), {
+        status: 500,
+        headers: corsHeaders
+      });
     }
+
+    const ai = new GoogleGenAI({
+      apiKey
+    });
+
+    // Format the prompt with proper spacing and line breaks
+    const prompt = `Given this waste disposal related query: "${queryForPrompt}"
+
+Provide a response in the following format (using markdown):
+
+First, a brief introduction about the waste item.
+
+Then, use these exact headings with emoji:
+
+🔍 Type & Classification
+[Brief classification and characteristics]
+
+♻ Disposal Guidelines
+- [Main disposal method]
+- [Alternative methods if applicable]
+- [Special handling instructions]
+
+🌍 Environmental Impact
+- [Positive impacts when disposed correctly]
+- [Negative impacts if disposed incorrectly]
+
+⚠ Safety Tips
+- [Key safety considerations]
+- [Handling precautions]
+
+Keep each section concise but informative, using bullet points where appropriate.
+Use informative tone.`;
 
     try {
-      console.log("Edge Function: Initializing Gemini client");
-      const genAI = createClient(apiKey);
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
-      const prompt = `Given this waste disposal related query: "${query}"
-      Please provide a structured response with:(dont use too many bullet points)
-      1. Waste type identification
-      2. Proper disposal methods
-      3. Environmental impact and sustainability
-      4. Safety considerations
-      5. If the query is anything not related to waste disposal, please say "I'm sorry, I can only help with waste disposal related queries." and tell nothing more than that.
-      Keep the response concise and practical and also short and to the point.`;
-
-      console.log("Edge Function: Sending request to Gemini API"); 
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
-
+      const response = await ai.models.generateContent({
+        model: "gemini-2.0-flash",
+        contents: prompt
+      });
+      const text = response.text;
       if (!text) {
-        console.error("Edge Function: Empty response from Gemini API");
-        throw new Error("Empty response from Gemini API");
+        throw new Error("Empty response from AI model");
       }
-
-      console.log("Edge Function: Successfully generated response");
-      return new Response(
-        JSON.stringify({ response: text }),
-        { headers: corsHeaders }
-      );
-    } catch (genaiError) {
-      console.error("Edge Function: Gemini API Error:", genaiError);
-      return new Response(
-        JSON.stringify({ 
-          error: "Failed to generate AI response",
-          details: genaiError.message 
-        }),
-        { status: 500, headers: corsHeaders }
-      );
+      return new Response(JSON.stringify({
+        response: text
+      }), {
+        headers: corsHeaders
+      });
+    } catch (error) {
+      // If first attempt fails, try with a simpler prompt
+      try {
+        const simplePrompt = `Provide waste disposal guidance for: "${queryForPrompt}". Include type, disposal methods, safety tips, and environmental impact.`;
+        const response = await ai.models.generateContent({
+          model: "gemini-2.0-flash",
+          contents: simplePrompt
+        });
+        const text = response.text;
+        if (!text) {
+          throw new Error("Empty response from AI model");
+        }
+        return new Response(JSON.stringify({
+          response: text
+        }), {
+          headers: corsHeaders
+        });
+      } catch (retryError) {
+        throw new Error("Failed to generate response after retry");
+      }
     }
   } catch (error) {
-    console.error("Edge Function: General Error:", error);
-    return new Response(
-      JSON.stringify({ 
-        error: "Failed to process request",
-        details: error.message 
-      }),
-      { status: 500, headers: corsHeaders }
-    );
+    return new Response(JSON.stringify({
+      error: "Service error",
+      message: error.message || "An unexpected error occurred"
+    }), {
+      status: 500,
+      headers: corsHeaders
+    });
   }
 });
