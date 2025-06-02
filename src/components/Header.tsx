@@ -1,5 +1,5 @@
 import React from 'react';
-import { Recycle } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 
 interface HeaderProps {
   darkMode: boolean;
@@ -7,46 +7,42 @@ interface HeaderProps {
 
 const Header = ({ darkMode }: HeaderProps) => {
   return (
-    <header className={`${
-      darkMode 
-        ? 'bg-gradient-to-r from-green-900 via-emerald-800 to-green-900 text-white' 
-        : 'bg-gradient-to-r from-green-500 via-emerald-400 to-green-500 text-white'
-    } py-16 shadow-xl relative overflow-hidden transition-all duration-500`}>
-      <div 
-        className={`absolute inset-0 bg-[url('https://images.pexels.com/photos/802221/pexels-photo-802221.jpeg')] bg-cover bg-center ${
-          darkMode ? 'opacity-10' : 'opacity-15'
-        } transform scale-105 transition-all duration-700`} 
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/20" />
-      <div className="container mx-auto px-4 flex items-center justify-center relative z-10">
-        <div className={`${
-          darkMode 
-            ? 'bg-white/10 border border-white/20 shadow-2xl' 
-            : 'bg-white/20 shadow-xl'
-        } p-10 rounded-3xl backdrop-blur-md transition-all duration-500 hover:scale-[1.02]`}>
-          <div className="flex items-center gap-8">
-            <div className={`${
-              darkMode 
-                ? 'bg-emerald-600 shadow-lg shadow-emerald-900/50' 
-                : 'bg-emerald-400 shadow-lg shadow-emerald-500/50'
-            } p-5 rounded-2xl transition-all duration-500 hover:rotate-12`}>
-              <Recycle className="text-white" size={48} />
-            </div>
-            <div className="text-center">
-              <h1 className="text-5xl font-bold text-white tracking-tight mb-2">Ecoquest</h1>
-              <p className={`${
-                darkMode 
-                  ? 'text-emerald-200' 
-                  : 'text-emerald-50'
-              } text-xl font-medium transition-colors duration-300 tracking-wide`}>
-                Journey to a Sustainable Future
-              </p>
-            </div>
-          </div>
+    <header className={`relative overflow-hidden min-h-[180px] flex items-center justify-center transition-colors duration-500 ${
+      darkMode
+        ? 'bg-gradient-to-br from-stone-800 via-emerald-900 to-slate-800 text-white'
+        : 'bg-gradient-to-br from-stone-100 via-emerald-50 to-slate-100 text-gray-900'
+    }`}>
+      {/* Natural Pattern Overlay */}
+      <div className="absolute inset-0 z-0 opacity-[0.15] bg-[radial-gradient(#2c3e2c_1px,transparent_1px)] [background-size:16px_16px]" />
+      
+      {/* Organic Gradient Overlay */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-tr from-stone-200/20 via-emerald-200/20 to-slate-200/20" />
+      
+      {/* Main Content Card - natural paper-like texture */}
+      <div className="relative z-10 w-full max-w-xl mx-auto px-4 py-5 flex flex-col items-center rounded-xl shadow-lg border border-stone-200/40 dark:border-stone-700/30 bg-stone-50/90 dark:bg-stone-800/20 backdrop-blur-sm">
+        {/* Icon */}
+        <div className="mb-3 p-2 rounded-full bg-gradient-to-tr from-stone-600 via-emerald-600 to-slate-600 shadow-md">
+          <Leaf className="text-white" size={30} />
         </div>
+        {/* Title */}
+        <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-stone-800 dark:text-stone-200 mb-1 text-center">
+          Ecoquest
+        </h1>
+        {/* Subtitle */}
+        <p className={`text-sm md:text-base font-medium text-center mb-1 transition-colors duration-300 ${
+          darkMode ? 'text-stone-100/90' : 'text-stone-800/90'
+        }`}>
+          Your Smart Guide to Sustainable Waste Disposal
+        </p>
+        {/* Tagline */}
+        <span className={`inline-block mt-1 px-3 py-0.5 rounded-full text-xs tracking-wider font-semibold transition-all duration-300 ${
+          darkMode ? 'bg-stone-800/60 text-stone-100' : 'bg-stone-200 text-stone-800'
+        }`}>
+          Clean. Green. Future-ready.
+        </span>
       </div>
     </header>
   );
 };
 
-export default Header
+export default Header;

@@ -1,3 +1,54 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(120deg, #e0f7fa 0%, #e0ffe8 100%);
+  background-attachment: fixed;
+  position: relative;
+  transition: background 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Subtle radial highlight overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 60% 20%, rgba(52, 211, 153, 0.10) 0%, transparent 70%);
+  z-index: 0;
+}
+
+/* Subtle noise overlay using SVG data URI */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.13;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="none"><filter id="a" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100" height="100" filter="url(%23a)"/></svg>');
+}
+
+/* Dark mode background */
+.dark body {
+  background: linear-gradient(120deg, #0f2027 0%, #2c5364 100%);
+}
+.dark body::before {
+  background: radial-gradient(ellipse at 60% 20%, rgba(16, 185, 129, 0.10) 0%, transparent 70%);
+}
+
+/* Glassmorphism utility for main containers */
+.glass-container {
+  background: rgba(255,255,255,0.65);
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.dark .glass-container {
+  background: rgba(30,41,59,0.55);
+  border: 1px solid rgba(16,185,129,0.10);
+}
